@@ -1,0 +1,126 @@
+.navbar_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 20px 0;
+  transition: all 0.3s ease;
+  background-color: rgba(10, 25, 47, 0.85);
+  backdrop-filter: blur(10px);
+}
+
+.navbar_scrolled {
+  box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+  padding: 15px 0;
+}
+
+.navbar_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+.navbar_logo {
+  display: flex;
+  align-items: center;
+  z-index: 101;
+}
+
+.navbar_logo_text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--secondary-color);
+  font-family: var(--font-mono);
+}
+
+.navbar_links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navbar_link {
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navbar_link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--secondary-color);
+  transition: width 0.3s ease;
+}
+
+.navbar_link:hover::after,
+.navbar_link_active::after {
+  width: 100%;
+}
+
+.navbar_link_active {
+  color: var(--secondary-color);
+}
+
+.navbar_resume_btn {
+  background-color: transparent;
+  border: 1px solid var(--secondary-color);
+  color: var(--secondary-color);
+  padding: 10px 16px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.navbar_resume_btn:hover {
+  background-color: rgba(100, 255, 218, 0.1);
+}
+
+.navbar_mobile_toggle {
+  display: none;
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 101;
+}
+
+@media (max-width: 768px) {
+  .navbar_content {
+    padding: 0 30px;
+  }
+
+  .navbar_mobile_toggle {
+    display: block;
+  }
+
+  .navbar_links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 75%;
+    max-width: 300px;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--background-light);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    padding: 50px 0;
+    box-shadow: -10px 0 30px -15px rgba(2, 12, 27, 0.7);
+  }
+
+  .navbar_active {
+    transform: translateX(0);
+  }
+}
