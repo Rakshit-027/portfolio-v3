@@ -109,9 +109,9 @@ const About = () => {
             <p className="about_paragraph">
               Fast-forward to today, and I've had the privilege of working at a start-up, a large corporation, and a student-led design studio. My main focus these days is building accessible, inclusive products and digital experiences for a variety of clients.
             </p>
-            <p className="about_paragraph">
+            {/* <p className="about_paragraph">
               I also recently launched a course that covers everything you need to build a web app with the MERN stack. I'm always looking to learn new technologies and improve my skills as a developer.
-            </p>
+            </p> */}
             <p className="about_paragraph">
               Here are a few technologies I've been working with recently:
             </p>
