@@ -1,62 +1,87 @@
-import { useEffect, useRef } from 'react'
-// import { Link } from 'react-router-dom'
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-scroll';
-import { motion } from 'framer-motion'
-import { FaArrowRight } from 'react-icons/fa'
-import '../styles/Home.css'
+import { motion } from 'framer-motion';
+import { FaArrowRight, FaGithub, FaInstagram } from 'react-icons/fa'; // Added Instagram and GitHub icons
+import '../styles/Home.css';
 
 const Home = () => {
-  const parallaxRef = useRef(null)
+  const parallaxRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!parallaxRef.current) return
-      
-      const elements = parallaxRef.current.querySelectorAll('.home_parallax_element')
-      
+      if (!parallaxRef.current) return;
+
+      const elements = parallaxRef.current.querySelectorAll('.home_parallax_element');
+
       elements.forEach(element => {
-        const speed = element.getAttribute('data-speed')
-        const x = (window.innerWidth - e.pageX * speed) / 100
-        const y = (window.innerHeight - e.pageY * speed) / 100
-        
-        element.style.transform = `translateX(${x}px) translateY(${y}px)`
-      })
-    }
-    
-    document.addEventListener('mousemove', handleMouseMove)
-    
+        const speed = parseFloat(element.getAttribute('data-speed')) || 1;
+        const x = (window.innerWidth - e.pageX * speed) / 100;
+        const y = (window.innerHeight - e.pageY * speed) / 100;
+
+        element.style.transform = `translateX(${x}px) translateY(${y}px)`;
+      });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [])
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
-  }
+        staggerChildren: 0.3,
+        delayChildren: 0.5,
+      },
+    },
+  };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 50, opacity: 0, scale: 0.9 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  }
+      scale: 1,
+      transition: { duration: 0.8, ease: 'easeOut', type: 'spring', stiffness: 100 },
+    },
+  };
+
+  const socialVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 1 } },
+  };
 
   return (
     <section className="home_container">
       <div className="home_parallax_wrapper" ref={parallaxRef}>
-        <div className="home_parallax_element home_circle1" data-speed="2"></div>
-        <div className="home_parallax_element home_circle2" data-speed="5"></div>
-        <div className="home_parallax_element home_square1" data-speed="3"></div>
-        <div className="home_parallax_element home_square2" data-speed="4"></div>
+        <motion.div 
+          className="home_parallax_element home_circle1" 
+          data-speed="2"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.1, transition: { duration: 1.5, delay: 0.2 } }}
+        />
+        <motion.div 
+          className="home_parallax_element home_circle2" 
+          data-speed="5"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.1, transition: { duration: 1.5, delay: 0.4 } }}
+        />
+        <motion.div 
+          className="home_parallax_element home_square1" 
+          data-speed="3"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.1, transition: { duration: 1.5, delay: 0.6 } }}
+        />
+        <motion.div 
+          className="home_parallax_element home_square2" 
+          data-speed="4"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.1, transition: { duration: 1.5, delay: 0.8 } }}
+        />
       </div>
 
       <motion.div 
@@ -80,13 +105,46 @@ const Home = () => {
         </motion.p>
         
         <motion.div className="home_cta_container" variants={itemVariants}>
-          <Link to="projects" className="home_cta_button">
+          <Link 
+            to="projects" 
+            className="home_cta_button"
+            smooth={true}
+            duration={500}
+          >
             View My Work <FaArrowRight className="home_cta_icon" />
           </Link>
         </motion.div>
+
+        <motion.div 
+          className="home_social_links"
+          variants={socialVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.a 
+            href="https://github.com/Rakshit-027" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="home_social_link"
+            whileHover={{ scale: 1.2, rotate: 10 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <FaGithub />
+          </motion.a>
+          <motion.a 
+            href="https://instagram.com/rakshit_waghmare" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="home_social_link"
+            whileHover={{ scale: 1.2, rotate: 10 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <FaInstagram />
+          </motion.a>
+        </motion.div>
       </motion.div>
     </section>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

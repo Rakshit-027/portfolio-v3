@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaGithub, FaExternalLinkAlt, FaCode, FaDatabase, FaReact } from 'react-icons/fa'; // Added more icons for categories
+import { FaGithub, FaExternalLinkAlt, FaCode, FaDatabase, FaReact } from 'react-icons/fa';
 import '../styles/Projects.css';
 
 const Projects = () => {
@@ -19,7 +19,7 @@ const Projects = () => {
   }, [controls, inView]);
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
@@ -30,7 +30,7 @@ const Projects = () => {
   };
 
   const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 30, opacity: 1 },
     visible: {
       y: 0,
       opacity: 1,
@@ -48,40 +48,40 @@ const Projects = () => {
       github: '',
       live: 'https://www.stackaura.in/',
       category: 'fullstack',
-      icon: FaReact, // Icon for category
+      icon: FaReact,
     },
     {
       id: 2,
       title: 'MeCart',
-      description: 'A full-featured e-commerce platform built with React js',
+      description: 'A full-featured e-commerce platform built with React.js',
       image: 'https://images2.imgbox.com/58/fe/djMjvlbl_o.png',
       technologies: ['React', 'TypeScript', 'Firebase', 'Material UI'],
       github: 'https://github.com/Rakshit-027/MeCart',
       live: 'https://ecom.stackaura.in/',
       category: 'fullstack',
-      icon: FaCode, // Icon for category
+      icon: FaCode,
     },
     {
       id: 3,
-      title: "Fudify-innovation",
-      description: "A modern crowdfunding web app built with React.js, empowering startup founders to showcase their ideas, raise funds securely, and connect with a supportive community. The platform features real-time funding progress, user-friendly dashboards, and social sharing to maximize visibility.",
-      image: "https://images2.imgbox.com/52/66/cEELZ7L3_o.png",
+      title: 'Fudify-innovation',
+      description: 'A modern crowdfunding web app built with React.js, empowering startup founders to showcase their ideas, raise funds securely, and connect with a supportive community. The platform features real-time funding progress, user-friendly dashboards, and social sharing to maximize visibility.',
+      image: 'https://images2.imgbox.com/52/66/cEELZ7L3_o.png',
       technologies: ['React', 'Socket.io', 'Express', 'MongoDB'],
-      github: 'https://github.com/Rakshit-027/Fundify-v2"',
+      github: 'https://github.com/Rakshit-027/Fundify-v2',
       live: 'https://fundify-innovate.netlify.app/',
       category: 'fullstack',
-      icon: FaReact, // Icon for category
+      icon: FaReact,
     },
     {
       id: 4,
-      title: "Movies-database And Search",
-      description: "The Movies Database and Search Web App is a platform that allows users to search and explore movies easily.",
-      image: "https://images2.imgbox.com/ff/26/KQVKXKlg_o.png",
-      technologies: ['JavaScript', 'HTML', 'CSS', 'node.js'],
+      title: 'Movies-database And Search',
+      description: 'The Movies Database and Search Web App is a platform that allows users to search and explore movies easily.',
+      image: 'https://images2.imgbox.com/ff/26/KQVKXKlg_o.png',
+      technologies: ['JavaScript', 'HTML', 'CSS', 'Node.js'],
       github: 'https://github.com/Rakshit-027/Movies-database-system',
       live: 'https://movies.stackaura.in/',
       category: 'backend',
-      icon: FaCode, // Icon for category
+      icon: FaCode,
     },
     {
       id: 5,
@@ -92,7 +92,7 @@ const Projects = () => {
       github: 'https://github.com',
       live: 'https://example.com',
       category: 'backend',
-      icon: FaDatabase, // Icon for category
+      icon: FaDatabase,
     },
     {
       id: 6,
@@ -103,13 +103,19 @@ const Projects = () => {
       github: 'https://github.com',
       live: 'https://example.com',
       category: 'fullstack',
-      icon: FaReact, // Icon for category
+      icon: FaReact,
     },
   ];
 
   const filteredProjects = activeFilter === 'all' 
     ? projects 
     : projects.filter(project => project.category === activeFilter);
+
+  // Log filtered projects to debug (optional, remove in production)
+  useEffect(() => {
+    console.log('Active Filter:', activeFilter);
+    console.log('Filtered Projects:', filteredProjects);
+  }, [activeFilter, filteredProjects]);
 
   return (
     <section className="projects_container section_container">
@@ -148,62 +154,77 @@ const Projects = () => {
         </motion.div>
 
         <motion.div className="projects_grid" variants={containerVariants}>
-          {filteredProjects.map((project) => (
-            <motion.div 
-              className="project_card" 
-              key={project.id}
-              variants={itemVariants}
-              whileHover={{ y: -10, boxShadow: '0 15px 35px rgba(0, 0, 0, 0.3)', transition: { duration: 0.3 } }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className="project_image_container">
-                <img src={project.image} alt={project.title} className="project_image" />
-                <div className="project_overlay">
-                  <div className="project_links">
-                    <motion.a 
-                      href={project.github} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="project_link"
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <FaGithub />
-                    </motion.a>
-                    <motion.a 
-                      href={project.live} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="project_link"
-                      whileHover={{ scale: 1.2, rotate: 5 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <FaExternalLinkAlt />
-                    </motion.a>
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((project) => (
+              <motion.div 
+                className="project_card" 
+                key={project.id}
+                variants={itemVariants}
+                whileHover={{ y: -10, boxShadow: '0 15px 35px rgba(0, 0, 0, 0.3)', transition: { duration: 0.3 } }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="project_image_container">
+                  <img src={project.image} alt={project.title} className="project_image" />
+                  <div className="project_overlay">
+                    <div className="project_links">
+                      {project.github && (
+                        <motion.a 
+                          href={project.github} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="project_link"
+                          whileHover={{ scale: 1.2, rotate: 5 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <FaGithub />
+                        </motion.a>
+                      )}
+                      {project.live && (
+                        <motion.a 
+                          href={project.live} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="project_link"
+                          whileHover={{ scale: 1.2, rotate: 5 }}
+                          whileTap={{ scale: 0.9 }}
+                        >
+                          <FaExternalLinkAlt />
+                        </motion.a>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="project_info">
-                <h3 className="project_title">{project.title}</h3>
-                <p className="project_description">{project.description}</p>
-                <div className="project_tech">
-                  {project.technologies.map((tech, index) => (
-                    <motion.span 
-                      key={index} 
-                      className="project_tech_item" 
-                      whileHover={{ scale: 1.1, backgroundColor: 'rgba(100, 255, 218, 0.2)' }}
-                    >
-                      {tech}
-                    </motion.span>
-                  ))}
+                <div className="project_info">
+                  <h3 className="project_title">{project.title}</h3>
+                  <p className="project_description">{project.description}</p>
+                  <div className="project_tech">
+                    {project.technologies.map((tech, index) => (
+                      <motion.span 
+                        key={index} 
+                        className="project_tech_item" 
+                        whileHover={{ scale: 1.1, backgroundColor: 'rgba(100, 255, 218, 0.2)' }}
+                      >
+                        {tech}
+                      </motion.span>
+                    ))}
+                  </div>
+                  <div className="project_category">
+                    <project.icon className="project_category_icon" />
+                    <span className="project_category_text">{project.category.charAt(0).toUpperCase() + project.category.slice(1)}</span>
+                  </div>
                 </div>
-                <div className="project_category">
-                  <project.icon className="project_category_icon" />
-                  <span className="project_category_text">{project.category.charAt(0).toUpperCase() + project.category.slice(1)}</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))
+          ) : (
+            <motion.p 
+              className="projects_no_results" 
+              variants={itemVariants}
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+            >
+              No projects found for this category.
+            </motion.p>
+          )}
         </motion.div>
       </motion.div>
     </section>

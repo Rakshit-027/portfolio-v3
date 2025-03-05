@@ -4,6 +4,7 @@
   padding: 80px 0;
   position: relative;
   overflow: hidden;
+  width: 100%; /* Ensure full width */
 }
 
 .projects_container::before {
@@ -23,6 +24,7 @@
   margin: 0 auto;
   padding: 0 20px;
   position: relative;
+  overflow: visible; /* Ensure content isn’t hidden */
 }
 
 .section_subtitle {
@@ -95,6 +97,7 @@
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 40px;
   margin-top: 40px;
+  overflow: visible; /* Ensure grid content is visible */
 }
 
 .project_card {
@@ -224,6 +227,17 @@
   color: var(--text-secondary);
 }
 
+.projects_no_results {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
 @media (max-width: 1024px) {
   .projects_grid {
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -281,5 +295,10 @@
   .project_tech_item {
     font-size: 0.8rem;
     padding: 4px 10px;
+  }
+
+  .projects_no_results {
+    font-size: 1rem;
+    padding: 15px;
   }
 }

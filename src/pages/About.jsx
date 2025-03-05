@@ -1,89 +1,89 @@
-import { useEffect } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
-import { FaCode, FaDatabase, FaPaintBrush, FaMobile, FaAward, FaBriefcase, FaGlobe } from 'react-icons/fa'
-import '../styles/About.css'
+import { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { FaCode, FaDatabase, FaPaintBrush, FaMobile, FaAward, FaBriefcase, FaGlobe } from 'react-icons/fa';
+import '../styles/About.css';
 
 const About = () => {
-  const controls = useAnimation()
+  const controls = useAnimation();
   const [ref, inView] = useInView({
     threshold: 0.2,
-    triggerOnce: true
-  })
+    triggerOnce: true,
+  });
 
   useEffect(() => {
     if (inView) {
-      controls.start('visible')
+      controls.start('visible');
     }
-  }, [controls, inView])
+  }, [controls, inView]);
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
-  }
+        delayChildren: 0.4,
+      },
+    },
+  };
 
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 20, opacity: 1 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  }
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  };
 
   const skills = [
     'JavaScript (ES6+)', 'React', 'Node.js', 'Express', 
     'MongoDB', 'PostgreSQL', 'HTML5', 'CSS3/SASS', 
     'Redux', 'GraphQL', 'RESTful APIs', 'Git/GitHub',
-    'Webpack', 'Jest', 'Docker', 'AWS'
-  ]
+    'Webpack', 'Jest', 'Docker', 'AWS',
+  ];
 
   const services = [
     {
       icon: <FaCode />,
       title: 'Frontend Development',
-      description: 'React, Vue, Angular'
+      description: 'React, Vue, Angular',
     },
     {
       icon: <FaDatabase />,
       title: 'Backend Development',
-      description: 'Node.js, Express, MongoDB'
+      description: 'Node.js, Express, MongoDB',
     },
     {
       icon: <FaPaintBrush />,
       title: 'UI/UX Design',
-      description: 'Figma, Adobe XD'
+      description: 'Figma, Adobe XD',
     },
     {
       icon: <FaMobile />,
       title: 'Mobile Development',
-      description: 'React Native'
-    }
-  ]
+      description: 'React Native',
+    },
+  ];
 
   const achievements = [
     {
       icon: <FaAward />,
       title: 'Certifications',
-      description: 'React, JavaScript, UI/UX Design'
+      description: 'React, JavaScript, UI/UX Design',
     },
     {
       icon: <FaBriefcase />,
       title: 'Experience',
-      description: '3+ years in web development'
+      description: '3+ years in web development',
     },
     {
       icon: <FaGlobe />,
       title: 'Projects',
-      description: '20+ completed projects'
-    }
-  ]
+      description: '20+ completed projects',
+    },
+  ];
 
   return (
     <section className="about_container section_container">
@@ -109,9 +109,6 @@ const About = () => {
             <p className="about_paragraph">
               Fast-forward to today, and I've had the privilege of working at a start-up, a large corporation, and a student-led design studio. My main focus these days is building accessible, inclusive products and digital experiences for a variety of clients.
             </p>
-            {/* <p className="about_paragraph">
-              I also recently launched a course that covers everything you need to build a web app with the MERN stack. I'm always looking to learn new technologies and improve my skills as a developer.
-            </p> */}
             <p className="about_paragraph">
               Here are a few technologies I've been working with recently:
             </p>
@@ -122,7 +119,7 @@ const About = () => {
                   key={index} 
                   className="about_skill_item"
                   variants={itemVariants}
-                  custom={index}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}
                 >
                   {skill}
                 </motion.li>
@@ -130,23 +127,25 @@ const About = () => {
             </ul>
           </motion.div>
 
+          {/* Uncomment and update this section if you want to add an image */}
           {/* <motion.div className="about_image_container" variants={itemVariants}>
             <div className="about_image_wrapper">
               <div className="about_image_placeholder">
-                <span className="about_image_text"><img src="https://zlmsmdibvnnhxthvdhhf.supabase.co/storage/v1/object/public/ScrollSlider/thumb/profile.png" alt="" /></span>
+                <span className="about_image_text"><img src="https://zlmsmdibvnnhxthvdhhf.supabase.co/storage/v1/object/public/ScrollSlider/thumb/profile.png" alt="Profile" /></span>
               </div>
             </div>
           </motion.div> */}
         </div>
 
         <motion.div className="about_services_section" variants={itemVariants}>
+          <h2 className="about_section_title">What I Offer</h2>
           <div className="about_services_grid">
             {services.map((service, index) => (
               <motion.div 
                 key={index} 
                 className="about_service_card"
                 variants={itemVariants}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.3 } }}
               >
                 <div className="about_service_icon">
                   {service.icon}
@@ -160,7 +159,7 @@ const About = () => {
 
         <motion.div className="about_journey_section" variants={itemVariants}>
           <h2 className="about_section_title">My Journey</h2>
-          <motion.div className="about_journey_card" variants={itemVariants}>
+          <motion.div className="about_journey_card" variants={itemVariants} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}>
             <p className="about_journey_text">
               I started my journey as a web developer in 2023, focusing primarily on frontend development. Over the years, I've worked with various technologies and frameworks, constantly learning and adapting to new challenges. My experience includes working with startups and large enterprises, helping them build scalable and maintainable web applications.
             </p>
@@ -168,14 +167,14 @@ const About = () => {
         </motion.div>
 
         <motion.div className="about_achievements_section" variants={itemVariants}>
-          <h2 className="about_section_title">Achievements</h2>
+          <h2 className="about_section_title">My Achievements</h2>
           <div className="about_achievements_grid">
             {achievements.map((achievement, index) => (
               <motion.div 
                 key={index} 
                 className="about_achievement_card"
                 variants={itemVariants}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.3 } }}
               >
                 <div className="about_achievement_icon">
                   {achievement.icon}
@@ -188,7 +187,7 @@ const About = () => {
         </motion.div>
       </motion.div>
     </section>
-  )
-}
+  );
+};
 
-export default About
+export default About;

@@ -313,10 +313,14 @@
 
   .contact_form_container {
     padding: 30px;
+    margin-left: -30px;
   }
 
   .contact_map {
     height: 200px; /* Reduced map height on mobile */
+  }
+  .contact_info{
+    margin-left: -30px;
   }
 }
 

@@ -27,7 +27,7 @@ const Experience = () => {
 
   const itemVariants = {
     hidden: { y: 30, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
   };
 
   const experiences = [
