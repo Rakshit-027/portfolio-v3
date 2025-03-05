@@ -208,6 +208,7 @@
   .home_cta_container {
     flex-direction: column;
     gap: 15px;
+    margin-left: -178px;
   }
 }
 
