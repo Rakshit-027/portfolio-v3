@@ -3,6 +3,10 @@ import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaGithub, FaInstagram } from 'react-icons/fa'; // Added Instagram and GitHub icons
 import '../styles/Home.css';
+import Insta from '../components/Insta';
+import Git from '../components/Git';
+import LinkedIn from '../components/LinkedIn';
+import X from '../components/X';
 
 const Home = () => {
   const parallaxRef = useRef(null);
@@ -125,22 +129,43 @@ const Home = () => {
             href="https://github.com/Rakshit-027" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="home_social_link"
-            whileHover={{ scale: 1.2, rotate: 10 }}
-            whileTap={{ scale: 0.9 }}
+            // className="home_social_link"
+            // whileHover={{ scale: 1.2, rotate: 10 }}
+            // whileTap={{ scale: 0.9 }}
           >
-            <FaGithub />
+            <Git/>
           </motion.a>
           <motion.a 
             href="https://instagram.com/rakshit_waghmare" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="home_social_link"
-            whileHover={{ scale: 1.2, rotate: 10 }}
-            whileTap={{ scale: 0.9 }}
+            // className="home_social_link"
+            // whileHover={{ scale: 1.2, rotate: 10 }}
+            // whileTap={{ scale: 0.9 }}
           >
-            <FaInstagram />
+            <Insta/>
           </motion.a>
+          <motion.a 
+            href="https://instagram.com/rakshit_waghmare" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            // className="home_social_link"
+            // whileHover={{ scale: 1.2, rotate: 10 }}
+            // whileTap={{ scale: 0.9 }}
+          >
+            <LinkedIn/>
+          </motion.a>
+          <motion.a 
+            href="https://instagram.com/rakshit_waghmare" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            // className="home_social_link"
+            // whileHover={{ scale: 1.2, rotate: 10 }}
+            // whileTap={{ scale: 0.9 }}
+          >
+            <X/>
+          </motion.a>
+
         </motion.div>
       </motion.div>
     </section>
