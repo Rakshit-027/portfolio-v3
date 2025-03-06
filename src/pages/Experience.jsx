@@ -144,7 +144,7 @@ const Experience = () => {
           {[
             {
               degree: 'Bachelor of Technology in Electronics and Communication',
-              school: 'RTMNU',
+              school: 'S.B Jain Institute of technology and management nagpur',
               period: '2020 - 2024',
               // description: 'Focused on web development, algorithms, and database systems. Graduated with honors.',
             },
