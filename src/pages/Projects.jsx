@@ -103,7 +103,7 @@ const Projects = () => {
       github: 'https://github.com',
       live: 'https://example.com',
       category: 'fullstack',
-      icon: FaReact,
+      icon: FaReact,FaDatabase,
     },
   ];
 

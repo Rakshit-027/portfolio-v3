@@ -98,7 +98,7 @@ const Home = () => {
           Hi, my name is
         </motion.p>
         <motion.h1 className="home_name" variants={itemVariants}>
-          Rakshit Waghmare
+          Rakshit 
         </motion.h1>
         <motion.h2 className="home_title" variants={itemVariants}>
           I build things for the web.
