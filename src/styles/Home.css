@@ -245,3 +245,40 @@
     padding: 8px;
   }
 }
+/* Add to Home.css */
+/* Add to Home.css */
+/* Add to Home.css */
+.home_content_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.home_content {
+  flex: 1;
+  max-width: 600px;
+}
+
+.home_loader_container {
+  flex-shrink: 0;
+  width: 300px; /* Adjust based on your Loader component size */
+  height: 200px; /* Adjust based on your Loader component size */
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .home_content_wrapper {
+    flex-direction: column;
+    gap: 70px;
+  }
+  
+  .home_loader_container {
+    width: 200px;
+    height: 150px;
+  }
+}

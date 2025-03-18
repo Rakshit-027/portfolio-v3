@@ -1,12 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
-import { FaArrowRight, FaGithub, FaInstagram } from 'react-icons/fa'; // Added Instagram and GitHub icons
+import { FaArrowRight, FaGithub, FaInstagram } from 'react-icons/fa';
 import '../styles/Home.css';
 import Insta from '../components/Insta';
 import Git from '../components/Git';
 import LinkedIn from '../components/LinkedIn';
 import X from '../components/X';
+import Loader from '../components/Loader'; // Adjust path as needed
+// import PhoneLoader from '../components/PhoneLoader';
+
+// Define your custom image URL here
+const customMacbookImage = "https://zlmsmdibvnnhxthvdhhf.supabase.co/storage/v1/object/public/media/photos/mac3.png"; // Replace with your image path
 
 const Home = () => {
   const parallaxRef = useRef(null);
@@ -59,6 +64,15 @@ const Home = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut', delay: 1 } },
   };
 
+  const loaderVariants = {
+    hidden: { x: 100, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 1, ease: 'easeOut', delay: 0.3 },
+    },
+  };
+
   return (
     <section className="home_container">
       <div className="home_parallax_wrapper" ref={parallaxRef}>
@@ -88,86 +102,85 @@ const Home = () => {
         />
       </div>
 
-      <motion.div 
-        className="home_content"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.p className="home_greeting" variants={itemVariants}>
-          Hi, my name is
-        </motion.p>
-        <motion.h1 className="home_name" variants={itemVariants}>
-          Rakshit 
-        </motion.h1>
-        <motion.h2 className="home_title" variants={itemVariants}>
-          I build things for the web.
-        </motion.h2>
-        <motion.p className="home_description" variants={itemVariants}>
-          I'm a full-stack web developer specializing in building exceptional digital experiences. 
-          Currently, I'm focused on building accessible, human-centered products.
-        </motion.p>
-        
-        <motion.div className="home_cta_container" variants={itemVariants}>
-          <Link 
-            to="projects" 
-            className="home_cta_button"
-            smooth={true}
-            duration={500}
-          >
-            View My Work <FaArrowRight className="home_cta_icon" />
-          </Link>
-        </motion.div>
-
+      <div className="home_content_wrapper">
         <motion.div 
-          className="home_social_links"
-          variants={socialVariants}
+          className="home_content"
+          variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.a 
-            href="https://github.com/Rakshit-027" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            // className="home_social_link"
-            // whileHover={{ scale: 1.2, rotate: 10 }}
-            // whileTap={{ scale: 0.9 }}
-          >
-            <Git/>
-          </motion.a>
-          <motion.a 
-            href="https://instagram.com/rakshit_waghmare" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            // className="home_social_link"
-            // whileHover={{ scale: 1.2, rotate: 10 }}
-            // whileTap={{ scale: 0.9 }}
-          >
-            <Insta/>
-          </motion.a>
-          <motion.a 
-            href="https://instagram.com/rakshit_waghmare" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            // className="home_social_link"
-            // whileHover={{ scale: 1.2, rotate: 10 }}
-            // whileTap={{ scale: 0.9 }}
-          >
-            <LinkedIn/>
-          </motion.a>
-          <motion.a 
-            href="https://instagram.com/rakshit_waghmare" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            // className="home_social_link"
-            // whileHover={{ scale: 1.2, rotate: 10 }}
-            // whileTap={{ scale: 0.9 }}
-          >
-            <X/>
-          </motion.a>
+          <motion.p className="home_greeting" variants={itemVariants}>
+            Hi, my name is
+          </motion.p>
+          <motion.h1 className="home_name" variants={itemVariants}>
+            Rakshit 
+          </motion.h1>
+          <motion.h2 className="home_title" variants={itemVariants}>
+            I build things for the web.
+          </motion.h2>
+          <motion.p className="home_description" variants={itemVariants}>
+            I'm a full-stack web developer specializing in building exceptional digital experiences. 
+            Currently, I'm focused on building accessible, human-centered products.
+          </motion.p>
+          
+          <motion.div className="home_cta_container" variants={itemVariants}>
+            <Link 
+              to="projects" 
+              className="home_cta_button"
+              smooth={true}
+              duration={500}
+            >
+              View My Work <FaArrowRight className="home_cta_icon" />
+            </Link>
+          </motion.div>
 
+          <motion.div 
+            className="home_social_links"
+            variants={socialVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <motion.a 
+              href="https://github.com/Rakshit-027" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <Git/>
+            </motion.a>
+            <motion.a 
+              href="https://instagram.com/rakshit_waghmare" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <Insta/>
+            </motion.a>
+            <motion.a 
+              href="https://instagram.com/rakshit_waghmare" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <LinkedIn/>
+            </motion.a>
+            <motion.a 
+              href="https://instagram.com/rakshit_waghmare" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <X/>
+            </motion.a>
+          </motion.div>
         </motion.div>
-      </motion.div>
+
+        <motion.div
+          className="home_loader_container"
+          variants={loaderVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <Loader imageUrl={customMacbookImage} /> {/* Pass the image URL */}
+          {/* <PhoneLoader/> */}
+        </motion.div>
+      </div>
     </section>
   );
 };
