@@ -55,11 +55,11 @@ const Navbar = () => {
           <Link to="about" smooth={true} duration={500} className="navbar_link" onClick={closeMenu}>
             About
           </Link>
-          <Link to="projects" smooth={true} duration={500} className="navbar_link" onClick={closeMenu}>
-            Projects
-          </Link>
           <Link to="experience" smooth={true} duration={500} className="navbar_link" onClick={closeMenu}>
             Experience
+          </Link>
+          <Link to="projects" smooth={true} duration={500} className="navbar_link" onClick={closeMenu}>
+            Projects
           </Link>
           <Link to="contact" smooth={true} duration={500} className="navbar_link" onClick={closeMenu}>
             Contact

@@ -17,6 +17,15 @@ const Experience = () => {
     }
   }, [controls, inView]);
 
+  // Auto-switch tabs every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveTab((prevTab) => (prevTab + 1) % experiences.length);
+    }, 10000);
+    
+    return () => clearInterval(interval); // Clean up the interval on component unmount
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -143,7 +152,7 @@ const Experience = () => {
           <h3 className="experience_education_title">Education</h3>
           {[
             {
-              degree: 'Bachelor of Technology in Electronics and Communication',
+              degree: 'Bachelor of Technology in Electronics and Telecommunication',
               school: 'S.B Jain Institute of technology and management nagpur',
               period: '2020 - 2024',
               // description: 'Focused on web development, algorithms, and database systems. Graduated with honors.',

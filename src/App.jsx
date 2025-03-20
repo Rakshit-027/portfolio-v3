@@ -16,8 +16,8 @@ function App() {
       <main className="app_main">
         <Element name="home"><Home /></Element>
         <Element name="about"><About /></Element>
-        <Element name="projects"><Projects /></Element>
         <Element name="experience"><Experience /></Element>
+        <Element name="projects"><Projects /></Element>
         <Element name="contact"><Contact /></Element>
       </main>
       <Footer />

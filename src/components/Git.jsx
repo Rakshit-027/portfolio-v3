@@ -30,7 +30,7 @@ const Git = () => {
                 </svg>
               </span>
             </div>
-            <div className="text">Discord</div>
+            <div className="text">Github</div>
           </a>
         </div>
       </div>

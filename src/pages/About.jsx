@@ -38,17 +38,17 @@ const About = () => {
   };
 
   const skills = [
-    'JavaScript (ES6+)', 'React', 'Node.js', 'Express', 
-    'MongoDB', 'PostgreSQL', 'HTML5', 'CSS3/SASS', 
+    'JavaScript (ES6+)','Typescript', 'React','Next.js','Three JS', 'Node.js', 'Express', 
+    'MongoDB', 'PostgreSQL', 'HTML5', 'CSS3/SASS','Tailwind CSS','Bootstrap', 
     'Redux', 'GraphQL', 'RESTful APIs', 'Git/GitHub',
-    'Webpack', 'Jest', 'Docker', 'AWS',
+   'Jest', 'Docker', 'AWS',
   ];
 
   const services = [
     {
       icon: <FaCode />,
       title: 'Frontend Development',
-      description: 'React, Vue, Angular',
+      description: 'React, Next.js, Angular',
     },
     {
       icon: <FaDatabase />,
@@ -103,15 +103,15 @@ const About = () => {
 
         <div className="about_grid">
           <motion.div className="about_text" variants={itemVariants}>
-            <p className="about_paragraph">
-              Hello! I'm a passionate full-stack developer with a love for creating interactive, responsive, and user-friendly web applications. My journey in web development began in 2018 when I decided to try editing custom Tumblr themes — turns out hacking together a custom reblog button taught me a lot about HTML & CSS!
-            </p>
-            <p className="about_paragraph">
-              Fast-forward to today, and I've had the privilege of working at a start-up, a large corporation, and a student-led design studio. My main focus these days is building accessible, inclusive products and digital experiences for a variety of clients.
-            </p>
-            <p className="about_paragraph">
-              Here are a few technologies I've been working with recently:
-            </p>
+          <p className="about_paragraph">
+  Hey there! I'm a passionate full-stack developer who loves building interactive, responsive, and user-friendly web applications. I started coding in 2019, and what began as simple curiosity quickly turned into an obsession with making the web a better (and less frustrating) place.
+</p>
+<p className="about_paragraph">
+  Since then, I've worked at a start-up, a large corporation, and a student-led design studio—so I've seen everything from fast-paced chaos to *meetings that should have been emails.* These days, my focus is on creating accessible, inclusive, and delightful digital experiences for a variety of clients.
+</p>
+<p className="about_paragraph">
+  Here are a few technologies I've been working with recently:
+</p>
 
             <ul className="about_skills_list">
               {skills.map((skill, index) => (
@@ -161,7 +161,7 @@ const About = () => {
           <h2 className="about_section_title">My Journey</h2>
           <motion.div className="about_journey_card" variants={itemVariants} whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}>
             <p className="about_journey_text">
-              I started my journey as a web developer in 2023, focusing primarily on frontend development. Over the years, I've worked with various technologies and frameworks, constantly learning and adapting to new challenges. My experience includes working with startups and large enterprises, helping them build scalable and maintainable web applications.
+              I started my journey as a web developer in 2019, focusing primarily on frontend development. Over the years, I've worked with various technologies and frameworks, constantly learning and adapting to new challenges. My experience includes working with startups and large enterprises, helping them build scalable and maintainable web applications.
             </p>
           </motion.div>
         </motion.div>
