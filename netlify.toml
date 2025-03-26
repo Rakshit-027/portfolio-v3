@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "build"
+  publish = "dist"  # Change this to "dist" since Vite outputs to "dist"
   functions = "netlify/functions"
 
 [[redirects]]
