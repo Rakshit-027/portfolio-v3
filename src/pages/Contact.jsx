@@ -319,7 +319,7 @@ const Contact = () => {
                 </div>
                 <div className="contact_form_group">
                   <ReCAPTCHA
-                    sitekey="6LcO6gArAAAAAJhkD-b91sTRYGLZFsHnJn7jcLU2" // Replace with your Site Key
+                    sitekey="6LfD7wArAAAAAMa5LZOStFwKuwfb2S0jTAlxIkj-" // Replace with your Site Key
                     onChange={onCaptchaChange}
                   />
                   {formErrors.captcha && <span className="contact_error_message">{formErrors.captcha}</span>}
