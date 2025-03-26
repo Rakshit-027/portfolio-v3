@@ -350,3 +350,6 @@
     font-size: 1rem;
   }
 }
+.g-recaptcha {
+  margin: 15px 0;
+}
