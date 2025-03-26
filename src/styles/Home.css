@@ -208,7 +208,7 @@
   .home_cta_container {
     flex-direction: column;
     gap: 15px;
-    margin-left: -178px;
+    margin-left: -119px;
   }
 }
 
@@ -252,7 +252,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 140px;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -260,7 +260,7 @@
 
 .home_content {
   flex: 1;
-  max-width: 600px;
+  max-width: 700px;
 }
 
 .home_loader_container {

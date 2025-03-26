@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt, FaPhone,FaInstagram } from 'react-icons/fa'; // Added more icons
+import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt, FaPhone, FaInstagram } from 'react-icons/fa';
 import '../styles/Contact.css';
 
 const Contact = () => {
@@ -10,12 +10,13 @@ const Contact = () => {
     email: '',
     subject: '',
     message: '',
-    phone: '', // New field for phone number
+    phone: '',
   });
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [showMap, setShowMap] = useState(false); // New state for toggling map
+  const [submitError, setSubmitError] = useState(null);
+  const [showMap, setShowMap] = useState(false);
 
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -57,19 +58,78 @@ const Contact = () => {
     return errors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validate();
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
       setIsSubmitting(true);
-      setTimeout(() => {
+      setSubmitError(null);
+
+      try {
+        // First email: Send form submission to your email
+        const submissionResponse = await fetch('/.netlify/functions/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'noreply@rakshit.is.dev.stackaura.in',
+            to: 'rakshitwaghmare27@gmail.com',
+            replyTo: 'rakshitwaghmare27@gmail.com',
+            subject: formData.subject || 'New Contact Form Submission',
+            html: `
+              <h3>New Message from ${formData.name}</h3>
+              <p><strong>Email:</strong> ${formData.email}</p>
+              ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
+              <p><strong>Message:</strong> ${formData.message}</p>
+            `,
+          }),
+        });
+
+        if (!submissionResponse.ok) {
+          throw new Error('Failed to send submission email');
+        }
+
+        const submissionData = await submissionResponse.json();
+
+        // Second email: Send thank-you email to the user
+        const thankYouResponse = await fetch('/.netlify/functions/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'noreply@rakshit.is.dev.stackaura.in',
+            to: formData.email,
+            replyTo: 'rakshitwaghmare27@gmail.com',
+            subject: 'Thank You for Contacting Me!',
+            html: `
+              <h3>Hi ${formData.name},</h3>
+              <p>Thank you for reaching out! I’ve received your message and will get back to you soon.</p>
+              <p><strong>Your Message:</strong> ${formData.message}</p>
+              <p>Best regards,<br>Rakshit Waghmare</p>
+            `,
+          }),
+        });
+
+        if (!thankYouResponse.ok) {
+          throw new Error('Failed to send thank-you email');
+        }
+
+        const thankYouData = await thankYouResponse.json();
+
+        // If both emails are sent successfully
         setIsSubmitting(false);
         setSubmitSuccess(true);
         setFormData({ name: '', email: '', subject: '', message: '', phone: '' });
         setTimeout(() => setSubmitSuccess(false), 5000);
-      }, 1500);
+      } catch (error) {
+        setIsSubmitting(false);
+        setSubmitError('Failed to send message. Please try again later.');
+        console.error('Error sending email:', error);
+      }
     }
   };
 
@@ -96,9 +156,7 @@ const Contact = () => {
         <div className="contact_grid">
           <motion.div className="contact_info" variants={itemVariants}>
             <p className="contact_text">
-            
-
-"I'm absolutely thrilled to dive into new possibilities and explore a wide range of exciting opportunities! Whether you’ve got a creative project idea bouncing around in your head, a thought-provoking question you’d like me to tackle, or even if you just want to drop by with a friendly hello, I’m here for it all. I’ll respond promptly and with enthusiasm, ready to engage and assist however I can. Let’s make something great happen together!"
+              "I'm absolutely thrilled to dive into new possibilities and explore a wide range of exciting opportunities! Whether you’ve got a creative project idea bouncing around in your head, a thought-provoking question you’d like me to tackle, or even if you just want to drop by with a friendly hello, I’m here for it all. I’ll respond promptly and with enthusiasm, ready to engage and assist however I can. Let’s make something great happen together!"
             </p>
             <div className="contact_methods">
               <motion.div className="contact_method" whileHover={{ scale: 1.05 }}>
@@ -121,7 +179,6 @@ const Contact = () => {
                 {[
                   { Icon: FaGithub, url: 'https://github.com/Rakshit-027' },
                   { Icon: FaLinkedin, url: 'https://www.linkedin.com/in/rakshit-waghmare-7060b31a5/' },
-                  // { Icon: FaTwitter, url: 'https://twitter.com' },
                   { Icon: FaInstagram, url: 'https://www.instagram.com/rakshit.27_/' },
                 ].map(({ Icon, url }, idx) => (
                   <motion.a
@@ -146,10 +203,9 @@ const Contact = () => {
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                {/* You can replace this with an actual map component like react-leaflet or google-maps-react */}
                 <iframe
                   title="Location Map"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.835634602998!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA%2C%20USA!5e0!3m2!1sen!2sus!4v1635768420000"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.663295424135!2d79.05863261496347!3d21.14663398592954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4c0a5a31d895f%3A0x797bd5f0e2547e82!2sNagpur%2C%20Maharashtra%2C%20India!5e0!3m2!1sen!2sus!4v1635768420000"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -186,7 +242,7 @@ const Contact = () => {
                 {[
                   { label: 'Name', name: 'name', type: 'text' },
                   { label: 'Email', name: 'email', type: 'email' },
-                  { label: 'Phone (Optional)', name: 'phone', type: 'tel' }, // New field
+                  { label: 'Phone (Optional)', name: 'phone', type: 'tel' },
                   { label: 'Subject (Optional)', name: 'subject', type: 'text' },
                 ].map(({ label, name, type }) => (
                   <div className="contact_form_group" key={name}>
@@ -216,6 +272,7 @@ const Contact = () => {
                   />
                   {formErrors.message && <span className="contact_error_message">{formErrors.message}</span>}
                 </div>
+                {submitError && <span className="contact_error_message">{submitError}</span>}
                 <motion.button
                   type="submit"
                   className="contact_form_button"
