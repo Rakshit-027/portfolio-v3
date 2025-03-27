@@ -18,7 +18,7 @@ const Contact = () => {
   const [submitError, setSubmitError] = useState(null);
   const [showMap, setShowMap] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
-  const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false); // Track reCAPTCHA script loading
+  const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false);
 
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -32,7 +32,6 @@ const Contact = () => {
     }
   }, [controls, inView]);
 
-  // Load reCAPTCHA v3 script dynamically with error handling
   useEffect(() => {
     const loadRecaptchaScript = () => {
       const script = document.createElement('script');
@@ -62,7 +61,6 @@ const Contact = () => {
     loadRecaptchaScript();
   }, []);
 
-  // Retry function for reCAPTCHA loading
   const retryRecaptcha = () => {
     setIsRecaptchaLoaded(false);
     setSubmitError(null);
@@ -167,6 +165,39 @@ const Contact = () => {
           throw new Error('CAPTCHA verification failed');
         }
 
+        // Enhanced Submission Email Template (Received by You)
+        const submissionEmailTemplate = `
+          <div style="font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 650px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+            <div style="background-color: #2c3e50; padding: 20px; text-align: center; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+              <h1 style="color: #ffffff; margin: 0; font-size: 30px; font-weight: 600;">New Contact Form Submission</h1>
+            </div>
+            <div style="padding: 30px; background-color: #ffffff; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+              <h3 style="color: #2c3e50; font-size: 24px; margin: 0 0 20px; border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 5px;">Message from ${formData.name}</h3>
+              <div style="margin-bottom: 20px;">
+                <p style="color: #555; font-size: 16px; margin: 0 0 10px; line-height: 1.6;">
+                  <strong style="color: #2c3e50;">Email:</strong> <a href="mailto:${formData.email}" style="color: #3498db; text-decoration: none;">${formData.email}</a>
+                </p>
+                ${formData.phone ? `
+                  <p style="color: #555; font-size: 16px; margin: 0 0 10px; line-height: 1.6;">
+                    <strong style="color: #2c3e50;">Phone:</strong> <a href="tel:${formData.phone}" style="color: #3498db; text-decoration: none;">${formData.phone}</a>
+                  </p>
+                ` : ''}
+                <p style="color: #555; font-size: 16px; margin: 0 0 10px; line-height: 1.6;">
+                  <strong style="color: #2c3e50;">Subject:</strong> ${formData.subject || 'N/A'}
+                </p>
+              </div>
+              <div style="background-color: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #3498db;">
+                <p style="color: #333; font-size: 16px; line-height: 1.6; margin: 0;">
+                  <strong style="color: #2c3e50;">Message:</strong><br>${formData.message}
+                </p>
+              </div>
+            </div>
+            <div style="text-align: center; padding: 15px; color: #777; font-size: 14px;">
+              <p style="margin: 0;">Received on ${new Date().toLocaleString()} | <a href="mailto:${formData.email}" style="color: #3498db; text-decoration: none;">Reply to this email</a></p>
+            </div>
+          </div>
+        `;
+
         const submissionResponse = await fetch('/.netlify/functions/send-email', {
           method: 'POST',
           headers: {
@@ -177,12 +208,7 @@ const Contact = () => {
             to: 'rakshitwaghmare27@gmail.com',
             replyTo: 'rakshitwaghmare27@gmail.com',
             subject: formData.subject || 'New Contact Form Submission',
-            html: `
-              <h3>New Message from ${formData.name}</h3>
-              <p><strong>Email:</strong> ${formData.email}</p>
-              ${formData.phone ? `<p><strong>Phone:</strong> ${formData.phone}</p>` : ''}
-              <p><strong>Message:</strong> ${formData.message}</p>
-            `,
+            html: submissionEmailTemplate,
           }),
         });
 
@@ -191,6 +217,44 @@ const Contact = () => {
         }
 
         const submissionData = await submissionResponse.json();
+
+        // Enhanced Thank-You Email Template (Sent to User)
+        const thankYouEmailTemplate = `
+          <div style="font-family: 'Poppins', Arial, sans-serif; max-width: 650px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); border-radius: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+            <div style="background: linear-gradient(90deg, #00c4cc, #007bff); padding: 30px; text-align: center; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+              <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">Thank You, ${formData.name}!</h1>
+              <p style="color: #e0f7fa; font-size: 16px; margin: 10px 0 0;">I’ve received your message!</p>
+            </div>
+            <div style="padding: 30px; background-color: #ffffff; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+              <p style="color: #333; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                Hi ${formData.name},<br>
+                Thank you for reaching out! I’m thrilled to hear from you and will get back to you as soon as possible. Your message means a lot to me!
+              </p>
+              <div style="background-color: #f0f7ff; padding: 20px; border-radius: 10px; border-left: 4px solid #00c4cc; margin-bottom: 20px;">
+                <p style="color: #555; font-size: 14px; margin: 0 0 5px;"><strong style="color: #00c4cc;">Your Message:</strong></p>
+                <p style="color: #333; font-size: 15px; line-height: 1.5; margin: 0;">${formData.message}</p>
+              </div>
+              <p style="color: #333; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                In the meantime, feel free to explore my work or connect with me online:
+              </p>
+              <div style="text-align: center; margin: 20px 0;">
+                <a href="https://rakshit.is.dev.stackaura.in" style="display: inline-block; background: linear-gradient(90deg, #00c4cc, #007bff); color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 25px; font-size: 16px; margin: 0 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">Visit My Portfolio</a>
+                <a href="https://www.linkedin.com/in/rakshit-waghmare-7060b31a5/" style="display: inline-block; background-color: #0077b5; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 25px; font-size: 16px; margin: 0 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">Connect on LinkedIn</a>
+              </div>
+            </div>
+            <div style="text-align: center; padding: 15px; color: #666; font-size: 14px;">
+              <p style="margin: 0 0 5px;">Best regards,<br><strong>Rakshit Waghmare</strong></p>
+              <p style="margin: 0;">
+                <a href="mailto:rakshitwaghmare27@gmail.com" style="color: #00c4cc; text-decoration: none;">rakshitwaghmare27@gmail.com</a> | 
+                <a href="tel:+917758960603" style="color: #00c4cc; text-decoration: none;">+91 775 896 0603</a>
+              </p>
+              <p style="margin: 5px 0 0;">
+                <a href="https://github.com/Rakshit-027" style="color: #666; text-decoration: none; margin: 0 8px;">GitHub</a> |
+                <a href="https://www.instagram.com/rakshit.27_/" style="color: #666; text-decoration: none; margin: 0 8px;">Instagram</a>
+              </p>
+            </div>
+          </div>
+        `;
 
         const thankYouResponse = await fetch('/.netlify/functions/send-email', {
           method: 'POST',
@@ -202,37 +266,7 @@ const Contact = () => {
             to: formData.email,
             replyTo: 'rakshitwaghmare27@gmail.com',
             subject: 'Thank You for Contacting Me!',
-            html: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-                <div style="background-color: #4a90e2; padding: 20px; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px;">
-                  <h1 style="color: #ffffff; margin: 0; font-size: 28px;">Thank You, ${formData.name}!</h1>
-                </div>
-                <div style="padding: 30px; background-color: #ffffff; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-                  <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 15px;">
-                    Thank you for reaching out! I’ve received your message and will get back to you as soon as possible.
-                  </p>
-                  <div style="background-color: #f1f1f1; padding: 15px; border-radius: 5px; margin: 20px 0;">
-                    <p style="color: #555555; font-size: 14px; margin: 0 0 5px;"><strong>Your Message:</strong></p>
-                    <p style="color: #333333; font-size: 14px; line-height: 1.5; margin: 0;">${formData.message}</p>
-                  </div>
-                  <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 15px;">
-                    In the meantime, feel free to check out my portfolio or connect with me on social media!
-                  </p>
-                  <div style="text-align: center; margin: 20px 0;">
-                    <a href="https://rakshit.is.dev.stackaura.in" style="display: inline-block; background-color: #4a90e2; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px; margin: 0 10px;">Visit My Portfolio</a>
-                    <a href="https://www.linkedin.com/in/rakshit-waghmare-7060b31a5/" style="display: inline-block; background-color: #0077b5; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 16px; margin: 0 10px;">Connect on LinkedIn</a>
-                  </div>
-                </div>
-                <div style="text-align: center; padding: 15px; color: #777777; font-size: 14px;">
-                  <p style="margin: 0 0 5px;">Best regards,<br>Rakshit Waghmare</p>
-                  <p style="margin: 0;">📧 <a href="mailto:rakshitwaghmare27@gmail.com" style="color: #4a90e2; text-decoration: none;">rakshitwaghmare27@gmail.com</a> | 📞 +91 775 896 0603</p>
-                  <p style="margin: 5px 0 0;">
-                    <a href="https://github.com/Rakshit-027" style="color: #777777; text-decoration: none; margin: 0 5px;">GitHub</a> |
-                    <a href="https://www.instagram.com/rakshit.27_/" style="color: #777777; text-decoration: none; margin: 0 5px;">Instagram</a>
-                  </p>
-                </div>
-              </div>
-            `,
+            html: thankYouEmailTemplate,
           }),
         });
 
