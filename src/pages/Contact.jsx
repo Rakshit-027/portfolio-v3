@@ -1,7 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import ReCAPTCHA from 'react-google-recaptcha'; // Import reCAPTCHA
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt, FaPhone, FaInstagram } from 'react-icons/fa';
 import '../styles/Contact.css';
 
@@ -18,7 +17,7 @@ const Contact = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [showMap, setShowMap] = useState(false);
-  const [captchaValue, setCaptchaValue] = useState(null); // State for CAPTCHA
+  const [captchaToken, setCaptchaToken] = useState(null); // State for reCAPTCHA v3 token
 
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -31,6 +30,19 @@ const Contact = () => {
       controls.start('visible');
     }
   }, [controls, inView]);
+
+  // Load reCAPTCHA v3 script dynamically
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js?render=6LfD7wArAAAAAMa5LZOStFwKuwfb2S0jTAlxIkj-'; // Replace with your v3 Site Key
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -57,16 +69,35 @@ const Contact = () => {
     else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Email is invalid';
     if (formData.phone && !/^\d{10}$/.test(formData.phone)) errors.phone = 'Phone must be a 10-digit number';
     if (!formData.message.trim()) errors.message = 'Message is required';
-    if (!captchaValue) errors.captcha = 'Please verify you are not a robot'; // CAPTCHA validation
+    if (!captchaToken) errors.captcha = 'reCAPTCHA verification failed'; // Check for token
     return errors;
   };
 
-  const onCaptchaChange = useCallback((value) => {
-    setCaptchaValue(value); // Set CAPTCHA value when completed
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Execute reCAPTCHA v3 to get a token
+    if (window.grecaptcha) {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha
+          .execute('6LeSVQErAAAAAFrOeV5cn1ksNej3n9G9JVcuVZAC', { action: 'submit' }) // Replace with your v3 Site Key
+          .then((token) => {
+            setCaptchaToken(token);
+            submitForm(token); // Call the form submission with the token
+          })
+          .catch((error) => {
+            console.error('reCAPTCHA error:', error);
+            setSubmitError('reCAPTCHA verification failed. Please try again.');
+            setIsSubmitting(false);
+          });
+      });
+    } else {
+      setSubmitError('reCAPTCHA not loaded. Please refresh the page.');
+      setIsSubmitting(false);
+    }
+  };
+
+  const submitForm = async (token) => {
     const errors = validate();
     setFormErrors(errors);
 
@@ -75,16 +106,17 @@ const Contact = () => {
       setSubmitError(null);
 
       try {
-        // Verify CAPTCHA on the server-side (optional but recommended)
+        // Verify CAPTCHA on the server-side
         const captchaVerification = await fetch('/.netlify/functions/verify-captcha', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ captcha: captchaValue }),
+          body: JSON.stringify({ captcha: token }),
         });
 
-        if (!captchaVerification.ok) {
+        const captchaResult = await captchaVerification.json();
+        if (!captchaVerification.ok || !captchaResult.success) {
           throw new Error('CAPTCHA verification failed');
         }
 
@@ -168,7 +200,7 @@ const Contact = () => {
         setIsSubmitting(false);
         setSubmitSuccess(true);
         setFormData({ name: '', email: '', subject: '', message: '', phone: '' });
-        setCaptchaValue(null); // Reset CAPTCHA
+        setCaptchaToken(null); // Reset CAPTCHA token
         setTimeout(() => setSubmitSuccess(false), 5000);
       } catch (error) {
         setIsSubmitting(false);
@@ -317,14 +349,18 @@ const Contact = () => {
                   />
                   {formErrors.message && <span className="contact_error_message">{formErrors.message}</span>}
                 </div>
-                <div className="contact_form_group">
-                  <ReCAPTCHA
-                    sitekey="6LfD7wArAAAAAMa5LZOStFwKuwfb2S0jTAlxIkj-" // Replace with your Site Key
-                    onChange={onCaptchaChange}
-                  />
-                  {formErrors.captcha && <span className="contact_error_message">{formErrors.captcha}</span>}
-                </div>
                 {submitError && <span className="contact_error_message">{submitError}</span>}
+                <div className="recaptcha-notice">
+                  This site is protected by reCAPTCHA and the Google{' '}
+                  <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+                    Privacy Policy
+                  </a>{' '}
+                  and{' '}
+                  <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">
+                    Terms of Service
+                  </a>{' '}
+                  apply.
+                </div>
                 <motion.button
                   type="submit"
                   className="contact_form_button"
@@ -332,7 +368,13 @@ const Contact = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? (
+                    <span>
+                      <span className="loading-spinner"></span> Verifying...
+                    </span>
+                  ) : (
+                    'Send Message'
+                  )}
                 </motion.button>
               </form>
             )}
