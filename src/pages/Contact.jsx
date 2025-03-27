@@ -17,7 +17,8 @@ const Contact = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [showMap, setShowMap] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState(null); // State for reCAPTCHA v3 token
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const [isRecaptchaLoaded, setIsRecaptchaLoaded] = useState(false); // Track reCAPTCHA script loading
 
   const controls = useAnimation();
   const [ref, inView] = useInView({
@@ -31,18 +32,61 @@ const Contact = () => {
     }
   }, [controls, inView]);
 
-  // Load reCAPTCHA v3 script dynamically
+  // Load reCAPTCHA v3 script dynamically with error handling
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js?render=6LfD7wArAAAAAMa5LZOStFwKuwfb2S0jTAlxIkj-'; // Replace with your v3 Site Key
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+    const loadRecaptchaScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://www.google.com/recaptcha/api.js?render=6LeSVQErAAAAAFrOeV5cn1ksNej3n9G9JVcuVZAC'; // Replace with your v3 Site Key
+      script.async = true;
+      script.defer = true;
 
-    return () => {
-      document.body.removeChild(script);
+      script.onload = () => {
+        console.log('reCAPTCHA script loaded successfully');
+        setIsRecaptchaLoaded(true);
+      };
+
+      script.onerror = () => {
+        console.error('Failed to load reCAPTCHA script');
+        setSubmitError('Failed to load reCAPTCHA. Please check your network or retry.');
+      };
+
+      document.body.appendChild(script);
+
+      return () => {
+        if (document.body.contains(script)) {
+          document.body.removeChild(script);
+        }
+      };
     };
+
+    loadRecaptchaScript();
   }, []);
+
+  // Retry function for reCAPTCHA loading
+  const retryRecaptcha = () => {
+    setIsRecaptchaLoaded(false);
+    setSubmitError(null);
+    const loadRecaptchaScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://www.google.com/recaptcha/api.js?render=6LeSVQErAAAAAFrOeV5cn1ksNej3n9G9JVcuVZAC'; // Replace with your v3 Site Key
+      script.async = true;
+      script.defer = true;
+
+      script.onload = () => {
+        console.log('reCAPTCHA script loaded successfully');
+        setIsRecaptchaLoaded(true);
+      };
+
+      script.onerror = () => {
+        console.error('Failed to load reCAPTCHA script');
+        setSubmitError('Failed to load reCAPTCHA. Please check your network or retry.');
+      };
+
+      document.body.appendChild(script);
+    };
+
+    loadRecaptchaScript();
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -69,30 +113,34 @@ const Contact = () => {
     else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Email is invalid';
     if (formData.phone && !/^\d{10}$/.test(formData.phone)) errors.phone = 'Phone must be a 10-digit number';
     if (!formData.message.trim()) errors.message = 'Message is required';
-    if (!captchaToken) errors.captcha = 'reCAPTCHA verification failed'; // Check for token
+    if (!captchaToken) errors.captcha = 'reCAPTCHA verification failed';
     return errors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Execute reCAPTCHA v3 to get a token
+    if (!isRecaptchaLoaded) {
+      setSubmitError('reCAPTCHA is still loading. Please wait a moment or retry.');
+      return;
+    }
+
     if (window.grecaptcha) {
       window.grecaptcha.ready(() => {
         window.grecaptcha
-          .execute('6LeSVQErAAAAAFrOeV5cn1ksNej3n9G9JVcuVZAC', { action: 'submit' }) // Replace with your v3 Site Key
+          .execute('6LfD7wArAAAAAMa5LZOStFwKuwfb2S0jTAlxIkj-', { action: 'submit' }) // Replace with your v3 Site Key
           .then((token) => {
             setCaptchaToken(token);
-            submitForm(token); // Call the form submission with the token
+            submitForm(token);
           })
           .catch((error) => {
-            console.error('reCAPTCHA error:', error);
+            console.error('reCAPTCHA execution error:', error);
             setSubmitError('reCAPTCHA verification failed. Please try again.');
             setIsSubmitting(false);
           });
       });
     } else {
-      setSubmitError('reCAPTCHA not loaded. Please refresh the page.');
+      setSubmitError('reCAPTCHA not loaded. Please refresh the page or retry.');
       setIsSubmitting(false);
     }
   };
@@ -106,7 +154,6 @@ const Contact = () => {
       setSubmitError(null);
 
       try {
-        // Verify CAPTCHA on the server-side
         const captchaVerification = await fetch('/.netlify/functions/verify-captcha', {
           method: 'POST',
           headers: {
@@ -120,7 +167,6 @@ const Contact = () => {
           throw new Error('CAPTCHA verification failed');
         }
 
-        // First email: Send form submission to your email
         const submissionResponse = await fetch('/.netlify/functions/send-email', {
           method: 'POST',
           headers: {
@@ -146,7 +192,6 @@ const Contact = () => {
 
         const submissionData = await submissionResponse.json();
 
-        // Second email: Send thank-you email to the user
         const thankYouResponse = await fetch('/.netlify/functions/send-email', {
           method: 'POST',
           headers: {
@@ -200,7 +245,7 @@ const Contact = () => {
         setIsSubmitting(false);
         setSubmitSuccess(true);
         setFormData({ name: '', email: '', subject: '', message: '', phone: '' });
-        setCaptchaToken(null); // Reset CAPTCHA token
+        setCaptchaToken(null);
         setTimeout(() => setSubmitSuccess(false), 5000);
       } catch (error) {
         setIsSubmitting(false);
@@ -349,7 +394,20 @@ const Contact = () => {
                   />
                   {formErrors.message && <span className="contact_error_message">{formErrors.message}</span>}
                 </div>
-                {submitError && <span className="contact_error_message">{submitError}</span>}
+                {submitError && (
+                  <div className="error-container">
+                    <span className="contact_error_message">{submitError}</span>
+                    {submitError.includes('reCAPTCHA') && (
+                      <button
+                        type="button"
+                        className="retry-button"
+                        onClick={retryRecaptcha}
+                      >
+                        Retry reCAPTCHA
+                      </button>
+                    )}
+                  </div>
+                )}
                 <div className="recaptcha-notice">
                   This site is protected by reCAPTCHA and the Google{' '}
                   <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
@@ -364,7 +422,7 @@ const Contact = () => {
                 <motion.button
                   type="submit"
                   className="contact_form_button"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !isRecaptchaLoaded}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
