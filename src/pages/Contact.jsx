@@ -128,7 +128,7 @@ const Contact = () => {
     if (window.grecaptcha) {
       window.grecaptcha.ready(() => {
         window.grecaptcha
-          .execute('6LfD7wArAAAAAMa5LZOStFwKuwfb2S0jTAlxIkj-', { action: 'submit' }) // Replace with your v3 Site Key
+          .execute('6LeSVQErAAAAAFrOeV5cn1ksNej3n9G9JVcuVZAC', { action: 'submit' }) // Replace with your v3 Site Key
           .then((token) => {
             setCaptchaToken(token);
             submitForm(token);
