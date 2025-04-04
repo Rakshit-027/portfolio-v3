@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaGithub, FaInstagram } from 'react-icons/fa';
@@ -7,15 +7,16 @@ import Insta from '../components/Insta';
 import Git from '../components/Git';
 import LinkedIn from '../components/LinkedIn';
 import X from '../components/X';
-import Loader from '../components/Loader'; // Adjust path as needed
-// import PhoneLoader from '../components/PhoneLoader';
+import Loader from '../components/Loader';
+import PortfolioLoader from '../components/PortfolioLoader'; // Added PortfolioLoader import
 
-// Define your custom image URL here
-const customMacbookImage = "https://zlmsmdibvnnhxthvdhhf.supabase.co/storage/v1/object/public/media/photos/mac3.png"; // Replace with your image path
+const customMacbookImage = "https://zlmsmdibvnnhxthvdhhf.supabase.co/storage/v1/object/public/media/photos/mac3.png";
 
 const Home = () => {
   const parallaxRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Parallax effect
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!parallaxRef.current) return;
@@ -36,6 +37,15 @@ const Home = () => {
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
     };
+  }, []);
+
+  // Loading effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 4000); // 2 seconds loading time - adjust as needed
+
+    return () => clearTimeout(timer);
   }, []);
 
   const containerVariants = {
@@ -72,6 +82,15 @@ const Home = () => {
       transition: { duration: 1, ease: 'easeOut', delay: 0.3 },
     },
   };
+
+  // Loading screen with PortfolioLoader
+  // if (isLoading) {
+  //   return (
+  //     <div className="loading_screen">
+  //       <PortfolioLoader />
+  //     </div>
+  //   );
+  // }
 
   return (
     <section className="home_container">
@@ -177,8 +196,7 @@ const Home = () => {
           initial="hidden"
           animate="visible"
         >
-          <Loader imageUrl={customMacbookImage} /> {/* Pass the image URL */}
-          {/* <PhoneLoader/> */}
+          <Loader imageUrl={customMacbookImage} />
         </motion.div>
       </div>
     </section>
