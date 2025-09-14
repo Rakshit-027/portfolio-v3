@@ -50,5 +50,9 @@
     "framer-motion"
   ],
   "author": "Rakshit Waghmare",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.20.4",
+    "npm": ">=10.0.0"
+  }
 }
