@@ -1,4 +1,4 @@
-import { generateMetadata as generatePageMetadata } from '../lib/seo-utils';
+import { generateMetadata as generatePageMetadata } from '../../lib/seo-utils';
 
 export const metadata = generatePageMetadata({
   title: 'Blog Posts - Rakshit Waghmare',
