@@ -13,15 +13,15 @@
     "seo-check": "next build && next start &amp; sleep 3 &amp;&amp; lighthouse http://localhost:3000 --only-categories=seo,accessibility,performance --output json --output-path ./seo-report.json"
   },
   "dependencies": {
-    "@portabletext/react": "^4.0.3",
+    "@portabletext/react": "^3.1.0",
     "@sanity/client": "^6.29.1",
-    "@sanity/icons": "^3.7.4",
+    "@sanity/icons": "^2.11.8",
     "@sanity/image-url": "^1.2.0",
-    "@sanity/vision": "^4.8.1",
+    "@sanity/vision": "^3.42.0",
     "axios": "^1.8.4",
     "framer-motion": "^11.0.8",
     "next": "^14.2.5",
-    "next-sanity": "^9.12.3",
+    "next-sanity": "^7.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-google-recaptcha": "^3.1.0",
@@ -29,7 +29,7 @@
     "react-intersection-observer": "^9.8.1",
     "react-scroll": "^1.9.3",
     "resend": "^4.2.0",
-    "sanity": "^4.8.1",
+    "sanity": "^3.42.0",
     "styled-components": "^6.1.19",
     "typed.js": "^2.1.0"
   },
