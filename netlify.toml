@@ -1,9 +1,9 @@
 [build]
   command = "npm run build"
-  publish = "dist"  # Change this to "dist" since Vite outputs to "dist"
-  functions = "netlify/functions"
+  publish = ".next"
+  
+[functions]
+  directory = "netlify/functions"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# For Next.js on Netlify, we need to handle API routes differently
+# The API routes are now in app/api/ and will be handled by Next.js

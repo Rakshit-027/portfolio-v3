@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "app/api/send-email/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/verify-captcha/route.js": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "RESEND_API_KEY": "@resend-api-key",
+    "RECAPTCHA_SECRET_KEY": "@recaptcha-secret-key"
+  }
+}

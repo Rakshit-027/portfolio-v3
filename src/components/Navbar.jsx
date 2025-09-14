@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+// import { NavLink } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import { motion } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
@@ -40,9 +40,9 @@ const Navbar = () => {
       variants={navbarVariants}
     >
       <div className="navbar_content">
-        <NavLink to="/" className="navbar_logo">
+        <a href="/" className="navbar_logo">
           <span className="navbar_logo_text">Rakshit Waghmare</span>
-        </NavLink>
+        </a>
 
         <div className="navbar_mobile_toggle" onClick={toggleMenu}>
           {isOpen ? <FaTimes /> : <FaBars />}

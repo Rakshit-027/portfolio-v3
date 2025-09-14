@@ -1,0 +1,326 @@
+/* Blogs Section Styles */
+.blogs {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 20%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  width: 100%; /* Ensure full width */
+}
+
+.blogs::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 80% 20%, rgba(100, 255, 218, 0.1), transparent 70%);
+  pointer-events: none;
+}
+
+.blogs_container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  overflow: visible; /* Ensure content isn't hidden */
+}
+
+.blogs_header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.blogs_subtitle {
+  color: var(--secondary-color);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.blogs_title {
+  color: var(--text-primary);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.blogs_title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--secondary-color);
+  border-radius: 2px;
+}
+
+.blogs_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
+  overflow: visible; /* Ensure grid content is visible */
+}
+
+.blog_card {
+  background: linear-gradient(145deg, var(--background-light) 0%, var(--background) 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(2, 12, 27, 0.7);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog_card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.blog_image {
+  position: relative;
+  overflow: hidden;
+  padding-top: 60%; /* Slightly taller aspect ratio for better visuals */
+}
+
+.blog_img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.blog_card:hover .blog_img {
+  transform: scale(1.1);
+}
+
+.blog_placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, var(--background-light) 0%, var(--background) 100%);
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+}
+
+.blog_content {
+  padding: 30px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog_title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.blog_excerpt {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.blog_meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.blog_author,
+.blog_date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.blog_author svg,
+.blog_date svg {
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+}
+
+.blog_read_more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  padding: 8px 0;
+}
+
+.blog_read_more:hover {
+  color: var(--text-primary);
+  transform: translateX(5px);
+}
+
+.blog_read_more svg {
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.blog_read_more:hover svg {
+  transform: translateX(3px);
+}
+
+.blogs_empty {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(2, 12, 27, 0.7);
+  grid-column: 1 / -1;
+}
+
+.blogs_empty::before {
+  content: '📝';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.blogs_view_all {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.view_all_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.view_all_btn:hover {
+  background: rgba(100, 255, 218, 0.1);
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(100, 255, 218, 0.2);
+}
+
+.view_all_btn svg {
+  transition: transform 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.view_all_btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .blogs_grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+  }
+
+  .blog_title {
+    font-size: 1.3rem;
+  }
+
+  .blog_excerpt {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .blogs {
+    padding: 60px 0;
+  }
+
+  .blogs_title {
+    font-size: 2rem;
+  }
+
+  .blogs_subtitle {
+    font-size: 1.1rem;
+  }
+
+  .blogs_grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+  }
+
+  .blog_content {
+    padding: 25px;
+  }
+
+  .blog_meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blogs_container {
+    padding: 0 15px;
+  }
+
+  .blogs_title {
+    font-size: 1.8rem;
+  }
+
+  .blogs_grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .blog_content {
+    padding: 20px;
+  }
+
+  .blog_title {
+    font-size: 1.2rem;
+  }
+
+  .blog_excerpt {
+    font-size: 0.85rem;
+  }
+
+  .blogs_empty {
+    font-size: 1rem;
+    padding: 30px 15px;
+  }
+}
